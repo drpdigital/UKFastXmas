@@ -1,7 +1,7 @@
-int speakerPin = 9;
+int sp  eakerPin = 9;
 int length = 26; // the number of notes
 char notes[] = "eeeeeeegcde fffffeeeeddedg"; // a space represents a rest
-int beats[] = { 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2};
+int beats[] = { 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2,};
 int tempo = 200;
 void playTone(int tone, int duration) {
   for (long i = 0; i < duration * 1000L; i += tone * 2) {
