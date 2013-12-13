@@ -12,6 +12,7 @@ int ldrPin = 10;  //define a pin for LDR
 int ldrValue = 0;
 int randomNumber;
 int targetTime;
+int lightTrigger = 50;
 
 int length = 26; // the number of notes
 char notes[] = "eeeeeeegcde fffffeeeeddedg"; // a space represents a rest
@@ -32,13 +33,10 @@ void playNote(char note, int duration) {
   int tones[] = { 1915, 1700, 1519, 1432, 1275, 1136, 1014, 956 };
   // play the tone corresponding to the note name
   for (int i = 0; i < 8; i++) {
-    Serial.println(analogRead(ldrPin));
-    if(analogRead(ldrPin)>300){
       randomLights(100);
       if (names[i] == note) {
         playTone(tones[i], duration);
       }  
-    }
   }
 }
 
@@ -76,7 +74,10 @@ void loop() {
     if (notes[i] == ' ') {
       delay(beats[i] * tempo); // rest
     } else {
-      playNote(notes[i], beats[i] * tempo);
+      if(analogRead(ldrPin)>lightTrigger){
+        Serial.println(analogRead(ldrPin));
+        playNote(notes[i], beats[i] * tempo);
+      }
     }
     // pause between notes
     delay(tempo / 2);
