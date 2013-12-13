@@ -8,7 +8,7 @@
 // Pin 0 o--------
 
 int speakerPin = 9;
-int ldrPin = 0;  //define a pin for LDR
+int ldrPin = 10;  //define a pin for LDR
 int ldrValue = 0;
 int randomNumber;
 int targetTime;
@@ -30,11 +30,14 @@ void playTone(int tone, int duration) {
 void playNote(char note, int duration) {
   char names[] = { 'c', 'd', 'e', 'f', 'g', 'a', 'b', 'C' };
   int tones[] = { 1915, 1700, 1519, 1432, 1275, 1136, 1014, 956 };
-
   // play the tone corresponding to the note name
   for (int i = 0; i < 8; i++) {
-    if (names[i] == note) {
-      playTone(tones[i], duration);
+    Serial.println(analogRead(ldrPin));
+    if(analogRead(ldrPin)>300){
+      randomLights(100);
+      if (names[i] == note) {
+        playTone(tones[i], duration);
+      }  
     }
   }
 }
@@ -53,7 +56,7 @@ void offLights(int low, int high) {
 }
 
 void randomLights(int timeout) {
-  randomNumber = random(0,10);
+  randomNumber = random(1,6);
   if(millis() > targetTime){
     targetTime = millis() + timeout;
     offLights(0,10);
@@ -62,13 +65,13 @@ void randomLights(int timeout) {
 }
 
 void setup() {
+  Serial.begin(9600);
   pinMode(speakerPin, OUTPUT);
   pinMode(ldrPin, INPUT);
   setPinMode(0,10);
 }
 
 void loop() {
-  ldrValue = (analogRead(ldrPin)/4); // write current light level to a variable --adjust division appropriate to resistor used
   for (int i = 0; i < length; i++) {
     if (notes[i] == ' ') {
       delay(beats[i] * tempo); // rest
